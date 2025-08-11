@@ -8,7 +8,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torchvision.transforms as T
-from yolov5.utils.general import check_requirements, check_version
+# from yolov5.utils.general import check_requirements, check_version
 
 from strongsort.deep.models import build_model
 from strongsort.deep.reid_model_factory import (
@@ -124,7 +124,7 @@ class ReIDDetectMultiBackend(nn.Module):
             LOGGER.info(f"Loading {w} for TensorRT inference...")
             import tensorrt as trt  # https://developer.nvidia.com/nvidia-tensorrt-download
 
-            check_version(trt.__version__, "7.0.0", hard=True)  # require tensorrt>=7.0.0
+            # check_version(trt.__version__, "7.0.0", hard=True)  # require tensorrt>=7.0.0
             if device.type == "cpu":
                 device = torch.device("cuda:0")
             Binding = namedtuple("Binding", ("name", "dtype", "shape", "data", "ptr"))
@@ -151,7 +151,7 @@ class ReIDDetectMultiBackend(nn.Module):
             batch_size = self.bindings["images"].shape[0]  # if dynamic, this is instead max batch size
         elif self.xml:  # OpenVINO
             LOGGER.info(f"Loading {w} for OpenVINO inference...")
-            check_requirements(("openvino",))  # requires openvino-dev: https://pypi.org/project/openvino-dev/
+            # check_requirements(("openvino",))  # requires openvino-dev: https://pypi.org/project/openvino-dev/
             from openvino.runtime import Core, Layout, get_batch
 
             ie = Core()
