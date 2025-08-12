@@ -13,21 +13,45 @@
 
 ## <div align="center">Overview</div>
 
-This repo is a packaged version of the [StrongSort](https://github.com/dyhBUPT/StrongSORT) algorithm.
+This repo is a packaged version of the [StrongSort](https://github.com/dyhBUPT/StrongSORT) algorithm with enhanced features including GSI (Gaussian-smoothed interpolation) and AFLink (Appearance-free link) for improved tracking performance.
 ### Installation
 ```
 pip install strongsort
 ```
 
-### Detection Model + StrongSort 
+### Basic Usage
 ```python
-from strong_sort import StrongSORT
+from strongsort import StrongSORT
 
 tracker = StrongSORT(model_weights='model.pth', device='cuda')
 pred = model(img)
 for i, det in enumerate(pred):
     det[i] = tracker[i].update(detection, im0s)
 ```
+
+### Enhanced Usage with GSI and AFLink
+```python
+from strongsort import StrongSORT
+
+# 创建升级版StrongSORT追踪器
+tracker = StrongSORT(
+    model_weights='osnet_x0_25_market1501.pth',
+    device='cuda',
+    enable_aflink=True,           # 启用AFLink
+    enable_gsi=True,              # 启用GSI
+    aflink_model_path='AFLink_epoch20.pth',  # AFLink模型路径
+    gsi_interval=20,              # GSI插值间隔
+    gsi_tau=10,                   # GSI平滑参数
+)
+
+# 更新追踪器
+tracks = tracker.update(detections, image)
+```
+
+### Features
+- **StrongSORT**: Base multi-object tracking algorithm
+- **GSI (Gaussian-smoothed interpolation)**: Compensates for missing detections using Gaussian process regression
+- **AFLink (Appearance-free link)**: Associates short tracklets into complete trajectories without appearance information
 
 ## Citations
 ```bibtex
